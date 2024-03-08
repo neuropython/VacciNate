@@ -1,0 +1,139 @@
+{
+  "szczepionki_obowiazkowe": [
+    {
+      "nazwa": "gruźlica",
+      "typ": "wirusowy",
+      "status": "obowiązkowa",
+      "ilość_dawek": 1,
+      "okres_miedzy_dawkami": null
+    },
+    {
+      "nazwa": "wirusowe zapalenie wątroby typu B",
+      "typ": "wirusowy",
+      "status": "obowiązkowa",
+      "ilość_dawek": 3,
+      "okres_miedzy_dawkami": "0, 1, 6 miesięcy"
+    },
+    {
+      "nazwa": "błonica",
+      "typ": "bakterialny",
+      "status": "obowiązkowa",
+      "ilość_dawek": 5,
+      "okres_miedzy_dawkami": "2, 4, 6, 18, 6 lat"
+    },
+    {
+      "nazwa": "krztusiec",
+      "typ": "bakterialny",
+      "status": "obowiązkowa",
+      "ilość_dawek": 5,
+      "okres_miedzy_dawkami": "2, 4, 6, 18, 6 lat"
+    },
+    {
+      "nazwa": "tężec",
+      "typ": "bakterialny",
+      "status": "obowiązkowa",
+      "ilość_dawek": 5,
+      "okres_miedzy_dawkami": "2, 4, 6, 18, 6 lat"
+    },
+    {
+      "nazwa": "ostre nagminne porażenie dziecięce (polio)",
+      "typ": "wirusowy",
+      "status": "obowiązkowa",
+      "ilość_dawek": 4,
+      "okres_miedzy_dawkami": "2, 4, 6, 18, 6 lat"
+    },
+    {
+      "nazwa": "odra",
+      "typ": "wirusowy",
+      "status": "obowiązkowa",
+      "ilość_dawek": 2,
+      "okres_miedzy_dawkami": "12-18 miesięcy"
+    },
+    {
+      "nazwa": "świnka",
+      "typ": "wirusowy",
+      "status": "obowiązkowa",
+      "ilość_dawek": 2,
+      "okres_miedzy_dawkami": "12-18 miesięcy"
+    },
+    {
+      "nazwa": "różyca",
+      "typ": "wirusowy",
+      "status": "obowiązkowa",
+      "ilość_dawek": 2,
+      "okres_miedzy_dawkami": "12-18 miesięcy"
+    },
+    {
+      "nazwa": "inwazyjne zakażenie Streptococcus pneumoniae (pneumokokowe)",
+      "typ": "bakterialny",
+      "status": "obowiązkowa",
+      "ilość_dawek": 4,
+      "okres_miedzy_dawkami": "2, 4, 6, 18 miesięcy"
+    },
+    {
+      "nazwa": "inwazyjne zakażenie Haemophilus influenzae typu B",
+      "typ": "bakterialny",
+      "status": "obowiązkowa",
+      "ilość_dawek": 3,
+      "okres_miedzy_dawkami": "2, 4, 6 miesięcy"
+    },
+    {
+      "nazwa": "zakażenia rotawirusowe",
+      "typ": "wirusowy",
+      "status": "obowiązkowa",
+      "ilość_dawek": 2,
+      "okres_miedzy_dawkami": "2, 4 miesiące"
+    },
+    {
+      "nazwa": "ospa wietrzna",
+      "typ": "wirusowy",
+      "status": "obowiązkowa",
+      "ilość_dawek": 2,
+      "okres_miedzy_dawkami": "0, 6-10 lat"
+    }
+  ],
+  "szczepionki_zalecane": [
+    {
+      "nazwa": "ospa wietrzna",
+      "typ": "wirusowy",
+      "status": "zalecana",
+      "ilość_dawek": 2,
+      "okres_miedzy_dawkami": "4-8 tygodni"
+    },
+    {
+      "nazwa": "kleszczowe zapalenie mózgu",
+      "typ": "wirusowy",
+      "status": "zalecana",
+      "ilość_dawek": 3,
+      "okres_miedzy_dawkami": "0, 1, 6 miesięcy"
+    },
+    {
+      "nazwa": "wirusowe zapalenie wątroby typu A (WZW typu A)",
+      "typ": "wirusowy",
+      "status": "zalecana",
+      "ilość_dawek": 2,
+      "okres_miedzy_dawkami": "0, 6-12 miesięcy"
+    },
+    {
+      "nazwa": "grypa",
+      "typ": "wirusowy",
+      "status": "zalecana",
+      "ilość_dawek": 1,
+      "okres_miedzy_dawkami": "rocznie"
+    },
+    {
+      "nazwa": "zakażenie rotawirusowe",
+      "typ": "wirusowy",
+      "status": "zalecana",
+      "ilość_dawek": 2,
+      "okres_miedzy_dawkami": "2, 4 miesiące"
+    },
+    {
+      "nazwa": "zakażenia meningokokowe",
+      "typ": "bakterialny",
+      "status": "zalecana",
+      "ilość_dawek": 2,
+      "okres_miedzy_dawkami": "2 miesiące"
+    }
+  ]
+}
