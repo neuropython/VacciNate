@@ -1,5 +1,5 @@
 from rest_framework.decorators import api_view
-from api.serializers import UserSerializer
+from .serializers import UserSerializer
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from userapp import models
