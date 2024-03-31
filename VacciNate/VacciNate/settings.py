@@ -11,16 +11,24 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
-
+from django.core.management.utils import get_random_secret_key
 import environ
 
 env = environ.Env()
 environ.Env.read_env()
 
 
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = get_random_secret_key()
+print(SECRET_KEY)
 SECRET_KEY = env('DJANGO_SECRET_KEY')
 DEBUG = env('DJANGO_DEBUG')
-
+ENGINE = env("ENGINE")
+NAME = env("NAME")
+USER = env("USER")
+PASSWORD = env("PASSWORD")
+HOST = env("HOST")
+PORT = env("PORT")
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -32,7 +40,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -89,11 +97,14 @@ WSGI_APPLICATION = 'VacciNate.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'railway',
+        'USER': 'postgres',
+        'PASSWORD': 'gblrvbwuvNREOzNInEwgLeqnLlcIzDRS',
+        'HOST': 'roundhouse.proxy.rlwy.net',
+        'PORT': '28699',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
