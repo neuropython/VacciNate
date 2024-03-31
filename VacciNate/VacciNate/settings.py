@@ -30,6 +30,7 @@ USER = env("USER")
 PASSWORD = env("PASSWORD")
 HOST = env("HOST")
 PORT = env("PORT")
+DEBUG_ = env("DJANGO_DEBUG")
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -39,7 +40,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = DEBUG_
 
 ALLOWED_HOSTS = ["*"]
 
@@ -98,12 +99,12 @@ WSGI_APPLICATION = 'VacciNate.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'railway',
-        'USER': 'postgres',
-        'PASSWORD': 'gblrvbwuvNREOzNInEwgLeqnLlcIzDRS',
-        'HOST': 'roundhouse.proxy.rlwy.net',
-        'PORT': '28699',
+        'ENGINE': ENGINE,
+        'NAME': NAME,
+        'USER': USER,
+        'PASSWORD': PASSWORD,
+        'HOST': HOST,
+        'PORT': PORT,
     }
 }
 
