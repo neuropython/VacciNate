@@ -13,16 +13,17 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 from django.core.management.utils import get_random_secret_key
 import environ
+from django.core.management.utils import get_random_secret_key
+print(get_random_secret_key())
 
 env = environ.Env()
 environ.Env.read_env()
 
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = get_random_secret_key()
-print(SECRET_KEY)
-SECRET_KEY = env('DJANGO_SECRET_KEY')
-DEBUG = env('DJANGO_DEBUG')
+
+# SECRET_KEY = env('DJANGO_SECRET_KEY')
+# DEBUG = env('DJANGO_DEBUG')
 ENGINE = env("ENGINE")
 NAME = env("NAME")
 USER = env("USER")
