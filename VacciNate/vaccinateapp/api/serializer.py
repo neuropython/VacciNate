@@ -8,6 +8,8 @@ class VaccinateSerializer(serializers.ModelSerializer):
         fields = '__all__'
     
 class UserVaccineSerializer(serializers.ModelSerializer):
+    user = serializers.StringRelatedField()
+    vaccine = serializers.StringRelatedField()
     
     class Meta:
         model = UserVaccine
