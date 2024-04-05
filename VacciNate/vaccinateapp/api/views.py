@@ -8,8 +8,11 @@ from rest_framework.permissions import IsAuthenticated
 class VaccinateAll(generics.ListCreateAPIView):
     queryset = Vaccine.objects.all()
     serializer_class = VaccinateSerializer
-    
 
+class VaccinateDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Vaccine.objects.all()
+    serializer_class = VaccinateSerializer
+    
 class UserVaccinateAll(generics.ListCreateAPIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
