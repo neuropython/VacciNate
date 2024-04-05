@@ -1,16 +1,19 @@
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from .serializers import UserSerializer
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
-from userapp import models
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
-
+from rest_framework.permissions import IsAuthenticated
+from datetime import timedelta
 
 @api_view(['POST'])
-def logout_view(request):
-    request.user.auth_token.delete()
-    return Response(status=status.HTTP_200_OK)
+@permission_classes([IsAuthenticated])
+def logout_view(request): 
+    refresh_token = request.data["refresh"]
+    token = RefreshToken(refresh_token)
+    token.blacklist()
+    return Response(status=status.HTTP_205_RESET_CONTENT)
 
 
 @api_view(['POST'])
