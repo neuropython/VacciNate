@@ -11,6 +11,8 @@ from datetime import timedelta
 @permission_classes([IsAuthenticated])
 def logout_view(request): 
     refresh_token = request.data["refresh"]
+    if refresh_token is None:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
     token = RefreshToken(refresh_token)
     token.blacklist()
     return Response(status=status.HTTP_205_RESET_CONTENT)
@@ -28,9 +30,6 @@ def registration_view(request):
             data['response'] = 'successfully registered new user.'
             data['email'] = account.email
             data['username'] = account.username
-            
-            # ---JWT Token---
-        
             token = RefreshToken.for_user(account)
             data['token'] = {
                 'refresh': str(token),
