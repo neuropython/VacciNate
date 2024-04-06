@@ -10,9 +10,9 @@ from datetime import timedelta
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def logout_view(request): 
-    refresh_token = request.data["refresh"]
+    refresh_token = request.data.get("refresh")
     if refresh_token is None:
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+        return Response({'error': 'No refresh token provided'}, status=status.HTTP_400_BAD_REQUEST)
     token = RefreshToken(refresh_token)
     token.blacklist()
     return Response(status=status.HTTP_205_RESET_CONTENT)
