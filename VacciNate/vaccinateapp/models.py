@@ -2,10 +2,12 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
 from datetime import timedelta
+from django.utils import timezone
 
 # Create your models here.
 
 class Vaccine(models.Model):
+    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
     type = models.CharField(max_length=100, null = True)
     status = models.CharField(max_length=100, default="mandatory")
@@ -29,14 +31,19 @@ class Vaccine(models.Model):
 
 class UserVaccine(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    vaccine = models.ForeignKey(Vaccine, on_delete=models.CASCADE)
-    date = models.DateField()
+    vaccine = models.ForeignKey(Vaccine, on_delete=models.CASCADE, related_name="vaccine")
     status = models.CharField(max_length=100, default="pending")
     dose = models.IntegerField(default=1)
-    next_date = models.DateField(null=True)
+    fist_date = models.DateField(null=False, default=timezone.now)
     all_dates = models.JSONField(null=True, blank=True)
     
     def save(self, *args, **kwargs):
+        if not self.vaccine:
+            raise ValueError("The vaccine attribute must be set before saving a UserVaccine instance.")
+        if self.vaccine.interval == "NL":
+            interval = [0]
+        else:
+            interval = list(map(int, self.vaccine.interval.split(",")))
         if self.vaccine.period == "MO":
             value = 30
         elif self.vaccine.period == "YR":
@@ -46,7 +53,7 @@ class UserVaccine(models.Model):
         else:
             value = 0
         self.all_dates = [
-            str(self.date + timedelta(days=i*value)) for i in range(self.vaccine.quantity_of_doses)
+            str(self.fist_date + timedelta(days=interval[i]*value)) for i in range(self.vaccine.quantity_of_doses)
             ]
         super(UserVaccine, self).save(*args, **kwargs)
 
