@@ -23,3 +23,8 @@ class UserVaccinateAll(generics.RetrieveUpdateDestroyAPIView):
     def get_queryset(self):
         user = self.request.user
         return  UserVaccine.objects.filter(user__username=user)
+    
+    def perform_create(self, serializer):
+        user = self.request.user
+        
+        serializer.save(user=user)

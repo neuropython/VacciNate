@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
+from datetime import timedelta
 
 # Create your models here.
 
@@ -33,6 +34,22 @@ class UserVaccine(models.Model):
     status = models.CharField(max_length=100, default="pending")
     dose = models.IntegerField(default=1)
     next_date = models.DateField(null=True)
+    all_dates = models.JSONField(null=True, blank=True)
+    
+    def save(self, *args, **kwargs):
+        if self.vaccine.period == "MO":
+            value = 30
+        elif self.vaccine.period == "YR":
+            value = 365
+        elif self.vaccine.period == "DT":
+            value = 1
+        else:
+            value = 0
+        self.all_dates = [
+            str(self.date + timedelta(days=i*value)) for i in range(self.vaccine.quantity_of_doses)
+            ]
+        super(UserVaccine, self).save(*args, **kwargs)
+
 
     def __str__(self):
         return self.user.username + " - " + self.vaccine.name
