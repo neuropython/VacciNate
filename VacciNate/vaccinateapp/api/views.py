@@ -41,7 +41,7 @@ class UserVaccinateAll(generics.ListCreateAPIView):
             fist_date = datetime.strptime(fist_date, '%Y-%m-%d').date() if fist_date else None
             serializer.save(user=user, vaccine=vaccine, fist_date=fist_date)
 
-class UserVaccineDelete(generics.DestroyAPIView):
+class UserVaccineDetail(generics.RetrieveUpdateDestroyAPIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
     
