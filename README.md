@@ -1,1 +1,1 @@
-fgyu
+Here is a repository in witch I store VaccinateApp REST Api backend. t is deployed via this link - https://vaccinatemanagmentbackend-production.up.railway.app/, here I store Postman documentation - https://app.getpostman.com/join-team?invite_code=52692754ffa69bd84d62469dc9248662&target_code=55d75f97b56b9627a30b2cd92ad5b7d4 
