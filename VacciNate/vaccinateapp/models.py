@@ -25,6 +25,17 @@ class Vaccine(models.Model):
         choices=Period.choices,
         default=Period.MONTH,
     )
+    class Status(models.TextChoices):
+        DONE = 'done', _('done')
+        PENDING = 'pending', _('pending')
+        CANCELLED = 'cancelled', _('cancelled')
+        
+    status = models.CharField(
+        max_length=10,
+        choices=Status.choices,
+        default=Status.PENDING,
+    )
+
 
     def __str__(self):
         return self.name
