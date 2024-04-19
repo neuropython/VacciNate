@@ -27,7 +27,7 @@ class Vaccine(models.Model):
     )
     class Status(models.TextChoices):
         MANDATORY = 'mandatory', _('mandatory')
-        RECOMENDED = 'recomended', _('recomended')
+        RECOMMENDED = 'recommended', _('recommended')
         NON_MANDATORY = 'non_mandatory', _('non_mandatory')
         
     obligation = models.CharField(
