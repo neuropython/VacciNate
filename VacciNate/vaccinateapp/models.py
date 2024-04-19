@@ -10,7 +10,7 @@ class Vaccine(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
     type = models.CharField(max_length=100, null = True)
-    status = models.CharField(max_length=100, default="mandatory")
+    obligation = models.CharField(max_length=20)
     quantity_of_doses = models.IntegerField(default=1)
     interval = models.CharField(max_length=100, null=True)
 
@@ -26,14 +26,14 @@ class Vaccine(models.Model):
         default=Period.MONTH,
     )
     class Status(models.TextChoices):
-        DONE = 'done', _('done')
-        PENDING = 'pending', _('pending')
-        CANCELLED = 'cancelled', _('cancelled')
+        MANDATORY = 'mandatory', _('mandatory')
+        RECOMENDED = 'recomended', _('recomended')
+        NON_MANDATORY = 'non_mandatory', _('non_mandatory')
         
-    status = models.CharField(
-        max_length=10,
+    obligation = models.CharField(
+        max_length=20,
         choices=Status.choices,
-        default=Status.PENDING,
+        default=Status.MANDATORY,
     )
 
 
@@ -68,6 +68,17 @@ class UserVaccine(models.Model):
                 str(self.fist_date + timedelta(days=interval[i]*value)) for i in range(self.vaccine.quantity_of_doses)
                 ]
         super(UserVaccine, self).save(*args, **kwargs)
+        
+    class Status(models.TextChoices):
+        DONE = 'done', _('done')
+        PENDING = 'pending', _('pending')
+        CANCELLED = 'cancelled', _('cancelled')
+        
+    status = models.CharField(
+        max_length=10,
+        choices=Status.choices,
+        default=Status.PENDING,
+    )
 
     def __str__(self):
         return self.user.username + " - " + self.vaccine.name
