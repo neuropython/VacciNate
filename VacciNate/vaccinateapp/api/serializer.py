@@ -15,3 +15,8 @@ class UserVaccineSerializer(serializers.ModelSerializer):
         model = UserVaccine
         fields = '__all__'
         
+    def create(self, validated_data):
+        user = User.objects.get(username=validated_data.pop('user'))
+        vaccine = Vaccine.objects.get(name=validated_data.pop('vaccine'))
+        return UserVaccine.objects.create(user=user, vaccine=vaccine, **validated_data)
+        

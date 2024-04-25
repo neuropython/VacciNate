@@ -1,1 +1,1 @@
-fgyu
+Here is a repository in which I store VaccinateApp REST API backend. t is deployed via this link - https://vaccinatemanagmentbackend-production.up.railway.app/, here I store Postman workspace for testing endpoints - https://www.postman.com/speeding-moon-917425/workspace/vacinateappapi/collection/29472124-087421a9-22fc-4891-ab88-b0ce6b5057f2?action=share&creator=29472124
