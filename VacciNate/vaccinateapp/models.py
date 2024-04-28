@@ -41,6 +41,7 @@ class Vaccine(models.Model):
         return self.name
 
 class UserVaccine(models.Model):
+    id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     vaccine = models.ForeignKey(Vaccine, on_delete=models.CASCADE, related_name="vaccine")
     status = models.CharField(max_length=100, default="pending")
