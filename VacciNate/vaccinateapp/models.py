@@ -46,7 +46,7 @@ class UserVaccine(models.Model):
     vaccine = models.ForeignKey(Vaccine, on_delete=models.CASCADE, related_name="vaccine")
     status = models.CharField(max_length=100, default="pending")
     dose = models.IntegerField(default=1)
-    fist_date = models.DateField(null=False, default=timezone.now)
+    first_date = models.DateField(null=False, default=timezone.now)
     all_dates = models.JSONField(null=True, blank=True)
     
     def save(self, *args, **kwargs):

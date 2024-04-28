@@ -72,15 +72,18 @@ def cancel(request, id):
 @permission_classes([IsAuthenticated])
 def update_date (request, id, old_date, new_date):
     object = UserVaccine.objects.get(id = id)
+    new_date_DateTime = datetime.strptime(new_date, '%Y-%m-%d').date()
     if old_date not in object.all_dates:
         return HttpResponseBadRequest("The specified date does not exist.")
-    if new_date in object.all_dates:
+    if new_date_DateTime in object.all_dates:
         return HttpResponseBadRequest("The specified date already exists.")
-    if new_date < object.fist_date:
+    if new_date_DateTime < object.first_date and old_date == object.first_date:
         return HttpResponseBadRequest("The specified date is earlier than the first date.")
-    if new_date < datetime.now().date():
+    if new_date_DateTime < datetime.now().date():
         return HttpResponseBadRequest("The specified date is earlier than today.")
     object.all_dates[object.all_dates.index(old_date)] = new_date
     object.save()
     return HttpResponse("Date updated")
+
+
     
