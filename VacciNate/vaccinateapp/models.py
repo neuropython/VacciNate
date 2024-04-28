@@ -8,16 +8,6 @@ from django.utils import timezone
 
 class Vaccine(models.Model):
     id = models.AutoField(primary_key=True)
-    """
-    This model is used to store the vaccine details
-    
-    name: Name of the vaccine
-    type: Type of the vaccine
-    status: Status of the vaccine
-    quantity_of_doses: Number of doses of the vaccine
-    interval: Interval between the doses
-    period: Period of the interval
-    """
     name = models.CharField(max_length=100)
     type = models.CharField(max_length=100, null = True)
     obligation = models.CharField(max_length=20)
@@ -51,17 +41,6 @@ class Vaccine(models.Model):
         return self.name
 
 class UserVaccine(models.Model):
-    """
-    This model is used to store the user vaccine details
-    
-    user: User who is taking the vaccine
-    vaccine: Vaccine which the user is taking
-    date: Date on which the user is taking the vaccine
-    status: Status of the vaccine
-    dose: Dose of the vaccine
-    next_date: Next date of the vaccine
-    all_dates: All the dates of the vaccine
-    """
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     vaccine = models.ForeignKey(Vaccine, on_delete=models.CASCADE, related_name="vaccine")
     status = models.CharField(max_length=100, default="pending")

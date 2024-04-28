@@ -8,30 +8,14 @@ from datetime import datetime
 from django.http import HttpResponseBadRequest
 
 class VaccinateAll(generics.ListCreateAPIView):
-    """
-    This class is used to get all the vaccines and add a new vaccine
-    
-    get: Get all the vaccines   
-    post: Add a new vaccine
-    """
     queryset = Vaccine.objects.all()
     serializer_class = VaccinateSerializer
 
 class VaccinateDetail(generics.RetrieveUpdateDestroyAPIView):
-    """
-    This class is used to get, update and delete a vaccine
-    
-    get: Get a vaccine
-    put: Update a vaccine
-    delete: Delete a vaccine
-    patch: Partial update of a vaccine
-    head: check if a vaccine exists
-    options: Get the allowed methods
-    """
     queryset = Vaccine.objects.all()
     serializer_class = VaccinateSerializer
     
-class UserVaccinateAll(generics.RetrieveUpdateDestroyAPIView):
+class UserVaccinateAll(generics.ListCreateAPIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
 
