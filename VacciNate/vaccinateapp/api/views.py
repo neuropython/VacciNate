@@ -86,4 +86,13 @@ def update_date (request, id, old_date, new_date):
     return HttpResponse("Date updated")
 
 
-    
+@csrf_exempt
+@require_http_methods(["PATCH"])
+@permission_classes([IsAuthenticated])
+def update_dose (request, id):
+    object = UserVaccine.objects.get(id = id)
+    object.dose -= 1
+    if object.dose == 0:
+        object.status = "done"
+    object.save()
+    return HttpResponse("Dose updated")
