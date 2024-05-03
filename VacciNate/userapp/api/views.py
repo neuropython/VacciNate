@@ -6,6 +6,7 @@ from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
 from datetime import timedelta
+from fcm_django.models import FCMDevice
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -40,3 +41,42 @@ def registration_view(request):
             data = serializer.errors
             
         return Response(data=data, status=status.HTTP_201_CREATED)
+    
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def add_device(request):
+    if request.method == 'POST':
+        if not request.data.get('registration_id') or not request.data.get('type'):
+            return Response(data = "Provide registration_id and type", status=status.HTTP_400_BAD_REQUEST)
+        if request.data.get('type') not in ['ios', 'android']:
+            return Response(data = "Invalid type choose from: ios/android/web", status=status.HTTP_400_BAD_REQUEST)
+        if FCMDevice.objects.filter(registration_id=request.data.get('registration_id')).exists():
+            return Response(data = "Device already exists if you have changed device run patch request", status=status.HTTP_400_BAD_REQUEST)
+        device = FCMDevice()
+        device.registration_id = request.data.get('registration_id')
+        device.type = request.data.get('type')
+        device.user = request.user
+        device.user_id = request.user.id
+        device.save()
+    
+        return Response(data = "Device added", status=status.HTTP_201_CREATED)
+    
+    return Response(status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['PATCH'])
+@permission_classes([IsAuthenticated])
+def update_device(request):
+    if request.method == 'PATCH':
+        if not request.data.get('registration_id') or not request.data.get('type'):
+            return Response(data = "Provide registration_id and type", status=status.HTTP_400_BAD_REQUEST)
+        if request.data.get('type') not in ['ios', 'android']:
+            return Response(data = "Invalid type choose from: ios/android/web", status=status.HTTP_400_BAD_REQUEST)
+        if not FCMDevice.objects.filter(registration_id=request.data.get('registration_id')).exists():
+            return Response(data = "Device does not exist", status=status.HTTP_400_BAD_REQUEST)
+        device = FCMDevice.objects.get(registration_id=request.data.get('registration_id'))
+        device.type = request.data.get('type')
+        device.save()
+    
+        return Response(data = "Device updated", status=status.HTTP_200_OK)
+    
+    return Response(status=status.HTTP_400_BAD_REQUEST)
