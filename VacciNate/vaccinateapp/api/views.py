@@ -10,7 +10,8 @@ from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.authentication import JWTAuthentication
-
+from fcm_django.models import FCMDevice
+from firebase_admin.messaging import Message, Notification
 
 class VaccinateAll(generics.ListCreateAPIView):
     queryset = Vaccine.objects.all()
@@ -96,3 +97,22 @@ def update_dose (request, id):
         object.status = "done"
     object.save()
     return HttpResponse("Dose updated")
+
+@require_http_methods(["GET"])
+@permission_classes([IsAuthenticated])
+def notify_test(request):
+    user = request.user
+    print(user)
+    devices = FCMDevice.objects.filter(user=user.id)
+    devices.send_message(
+                message =Message(
+                    notification=Notification(
+                        title='Wallet Deposit from Admin',
+                        body=f'Ignacy has deposited 1000 coins in your wallet'
+                    ),
+                ),
+                # this is optional
+                # app=settings.FCM_DJANGO_SETTINGS['DEFAULT_FIREBASE_APP']
+            )
+    return HttpResponse("Notified")
+        
