@@ -18,6 +18,10 @@ from google.auth import load_credentials_from_file
 from celery import Celery
 env = environ.Env()
 environ.Env.read_env()
+from google.auth import credentials
+from google.oauth2.service_account import Credentials as ServiceAccountCredentials
+from django.conf import settings
+
 
 
 # SECURITY WARNING: keep the secret key used in production secret!
@@ -31,6 +35,20 @@ HOST = env("HOST")
 PORT = env("PORT")
 DEBUG_ = env("DJANGO_DEBUG")
 REDIS_URL = env("REDIS_URL")
+
+CUSTOM_GOOGLE_APPLICATION_CREDENTIALS = {
+  "type": env("type"),
+  "project_id": env("project_id"),
+  "private_key_id": env("private_key_id"),
+  "private_key": env("private_key"),
+  "client_email": env("client_email"),
+  "client_id": env("client_id"),
+  "auth_uri": env("auth_uri"),
+  "token_uri": env("token_uri"),
+  "auth_provider_x509_cert_url": env("auth_provider_x509_cert_url"),
+  "client_x509_cert_url": env("client_x509_cert_url"),
+  "universe_domain": env("universe_domain")
+}
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -181,18 +199,23 @@ SIMPLE_JWT = {
     'ROTAATE_REFRESH_TOKENS': True,
 }
 
-class CustomFirebaseCredentials(credentials.ApplicationDefault):
-    def __init__(self, account_file_path: str):
+class CustomFirebaseCredentials(credentials.Credentials):
+    def __init__(self):
         super().__init__()
-        self._account_file_path = account_file_path
+        self._g_credential = None
+        self._project_id = None
 
     def _load_credential(self):
         if not self._g_credential:
-            self._g_credential, self._project_id = load_credentials_from_file(self._account_file_path,
-                                                                              scopes=credentials._scopes)
+            self._g_credential = ServiceAccountCredentials.from_service_account_info(
+                settings.CUSTOM_GOOGLE_APPLICATION_CREDENTIALS,
+                scopes=credentials._scopes
+            )
+            self._project_id = settings.CUSTOM_GOOGLE_APPLICATION_CREDENTIALS['project_id']
 
 
-custom_credentials = CustomFirebaseCredentials(env('CUSTOM_GOOGLE_APPLICATION_CREDENTIALS'))
+
+custom_credentials = CustomFirebaseCredentials(CUSTOM_GOOGLE_APPLICATION_CREDENTIALS)
 FIREBASE_MESSAGING_APP = initialize_app(custom_credentials, name='messaging')
 
 FCM_DJANGO_SETTINGS = {
