@@ -14,13 +14,12 @@ from pathlib import Path
 import environ
 from datetime import timedelta
 from firebase_admin import initialize_app, credentials
-from google.auth import load_credentials_from_file
+from google.auth import load_credentials_from_dict
 from celery import Celery
 env = environ.Env()
 environ.Env.read_env()
-from google.auth import credentials
-from google.oauth2.service_account import Credentials as ServiceAccountCredentials
-from django.conf import settings
+from firebase_admin import initialize_app, credentials
+from google.auth import load_credentials_from_dict
 
 
 
@@ -199,24 +198,20 @@ SIMPLE_JWT = {
     'ROTAATE_REFRESH_TOKENS': True,
 }
 
-class CustomFirebaseCredentials(credentials.Credentials):
-    def __init__(self):
+class CustomFirebaseCredentials(credentials.ApplicationDefault):
+    def __init__(self, account_file_path: str):
         super().__init__()
-        self._g_credential = None
-        self._project_id = None
+        self._account_file_path = account_file_path
 
     def _load_credential(self):
         if not self._g_credential:
-            self._g_credential = ServiceAccountCredentials.from_service_account_info(
-                settings.CUSTOM_GOOGLE_APPLICATION_CREDENTIALS,
-                scopes=credentials._scopes
-            )
-            self._project_id = settings.CUSTOM_GOOGLE_APPLICATION_CREDENTIALS['project_id']
+            self._g_credential, self._project_id = load_credentials_from_dict(CUSTOM_GOOGLE_APPLICATION_CREDENTIALS)
 
 
 
 custom_credentials = CustomFirebaseCredentials(CUSTOM_GOOGLE_APPLICATION_CREDENTIALS)
 FIREBASE_MESSAGING_APP = initialize_app(custom_credentials, name='messaging')
+
 
 FCM_DJANGO_SETTINGS = {
     "DEFAULT_FIREBASE_APP": FIREBASE_MESSAGING_APP,
