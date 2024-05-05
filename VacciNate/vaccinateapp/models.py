@@ -51,6 +51,8 @@ class UserVaccine(models.Model):
     
     def save(self, *args, **kwargs):
         if not self.id:  # This is a new instance
+            if not self.first_date:
+                raise ValueError("The first_date attribute must be set before saving a UserVaccine instance.")
             if not self.vaccine:
                 raise ValueError("The vaccine attribute must be set before saving a UserVaccine instance.")
             if self.vaccine.interval == "NL":
@@ -65,8 +67,9 @@ class UserVaccine(models.Model):
                 value = 1
             else:
                 value = 0
+            print(self.first_date)
             self.all_dates = [
-                str(self.fist_date + timedelta(days=interval[i]*value)) for i in range(self.vaccine.quantity_of_doses)
+                str(self.first_date + timedelta(days=interval[i]*value)) for i in range(self.vaccine.quantity_of_doses)
                 ]
         super(UserVaccine, self).save(*args, **kwargs)
         

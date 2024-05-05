@@ -15,7 +15,7 @@ import environ
 from datetime import timedelta
 from firebase_admin import initialize_app, credentials
 from google.auth import load_credentials_from_file
-
+from celery import Celery
 env = environ.Env()
 environ.Env.read_env()
 
@@ -30,6 +30,7 @@ PASSWORD = env("PASSWORD")
 HOST = env("HOST")
 PORT = env("PORT")
 DEBUG_ = env("DJANGO_DEBUG")
+REDIS_URL = env("REDIS_URL")
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -61,7 +62,8 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     'rest_framework_simplejwt.token_blacklist',
     "push_notifications",
-    'fcm_django'
+    'fcm_django',
+    'django_celery_beat'
 
 ]
 
@@ -188,22 +190,30 @@ class CustomFirebaseCredentials(credentials.ApplicationDefault):
         if not self._g_credential:
             self._g_credential, self._project_id = load_credentials_from_file(self._account_file_path,
                                                                               scopes=credentials._scopes)
-            
-CUSTOM_GOOGLE_APPLICATION_CREDENTIALS = 'VacciNate\push.json'
-custom_credentials = CustomFirebaseCredentials(CUSTOM_GOOGLE_APPLICATION_CREDENTIALS)
+
+
+custom_credentials = CustomFirebaseCredentials(env('CUSTOM_GOOGLE_APPLICATION_CREDENTIALS'))
 FIREBASE_MESSAGING_APP = initialize_app(custom_credentials, name='messaging')
 
 FCM_DJANGO_SETTINGS = {
-     # an instance of firebase_admin.App to be used as default for all fcm-django requests
-     # default: None (the default Firebase app)
     "DEFAULT_FIREBASE_APP": FIREBASE_MESSAGING_APP,
-     # default: _('FCM Django')
-    "APP_VERBOSE_NAME": "What ever name",
-     # true if you want to have only one active device per registered user at a time
-     # default: False
+    "APP_VERBOSE_NAME": "Vaccinate App",
     "ONE_DEVICE_PER_USER": False,
-     # devices to which notifications cannot be sent,
-     # are deleted upon receiving error response from FCM
-     # default: False
     "DELETE_INACTIVE_DEVICES": False,
 }
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': REDIS_URL,
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
+    }
+}
+
+
+CELERY_TIMEZONE = "Europe/Warsaw"
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 30 * 60
+CELERY_ALWAYS_EAGER = True

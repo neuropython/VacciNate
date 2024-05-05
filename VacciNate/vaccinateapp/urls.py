@@ -8,7 +8,7 @@ from .api.views import (VaccinateAll,
                         cancel,
                         update_date,
                         update_dose,
-                        notify_test)
+                        notify_user_test)
 
 urlpatterns = [
     path('list/', VaccinateAll.as_view(), name='vaccination-list'),
@@ -18,6 +18,6 @@ urlpatterns = [
     path('uservaccine/cancel/<int:id>/', cancel , name='uservaccine-cancel'),
     path('uservaccine/update_date/<int:id>/<str:old_date>/<str:new_date>/', update_date, name='uservaccine-update'),
     path("uservaccine/update_dose/<int:id>", update_dose, name="uservaccine-update-dose"),
-    path("notify_test/", notify_test, name="notify_test"),
+    path("notify/", notify_user_test, name="notify")
     ]
  
