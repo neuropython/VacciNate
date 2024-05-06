@@ -132,6 +132,7 @@ def notify_user_test(request):
 @receiver(post_save, sender=UserVaccine)
 def notify_user(sender, instance, **kwargs):
     user_id = instance.user.id
+    notify.apply_async(args=[user_id], eta=datetime.now())
     for date_str in instance.all_dates[0:]:
         notify.apply_async(args=[user_id], eta=datetime.strptime(date_str, '%Y-%m-%d'))
 
