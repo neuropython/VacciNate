@@ -9,9 +9,11 @@ environ.Env.read_env()
 REDIS_URL = env("REDIS_URL")
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'VacciNate.settings')
-app = Celery('VacciNate', broker=REDIS_URL, backend=REDIS_URL)
+app = Celery('VacciNate', broker=REDIS_URL, backend=REDIS_URL, broker_heartbeat=0)
 
 app.config_from_object('django.conf:settings', namespace='CELERY')
+
+app.conf.broker_connection_retry_on_startup = True
 
 app.autodiscover_tasks()
 
