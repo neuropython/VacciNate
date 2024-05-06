@@ -212,6 +212,7 @@ class CustomFirebaseCredentials(credentials.ApplicationDefault):
 custom_credentials = CustomFirebaseCredentials(CUSTOM_GOOGLE_APPLICATION_CREDENTIALS)
 FIREBASE_MESSAGING_APP = initialize_app(custom_credentials, name='messaging')
 
+BROKER_TRANSPORT_OPTIONS = {"socket_keepalive": True, "health_check_interval": 4}
 
 FCM_DJANGO_SETTINGS = {
     "DEFAULT_FIREBASE_APP": FIREBASE_MESSAGING_APP,
