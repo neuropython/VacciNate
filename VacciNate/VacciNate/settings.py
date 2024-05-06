@@ -39,7 +39,7 @@ CUSTOM_GOOGLE_APPLICATION_CREDENTIALS = {
   "type": env("type"),
   "project_id": env("project_id"),
   "private_key_id": env("private_key_id"),
-  "private_key": env("private_key"),
+  "private_key": str(env("private_key")).replace('\\n', '\n'),
   "client_email": env("client_email"),
   "client_id": env("client_id"),
   "auth_uri": env("auth_uri"),
@@ -48,6 +48,7 @@ CUSTOM_GOOGLE_APPLICATION_CREDENTIALS = {
   "client_x509_cert_url": env("client_x509_cert_url"),
   "universe_domain": env("universe_domain")
 }
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -198,22 +199,9 @@ SIMPLE_JWT = {
     'ROTAATE_REFRESH_TOKENS': True,
 }
 
-class CustomFirebaseCredentials(credentials.ApplicationDefault):
-    def __init__(self, account_file_path: str):
-        super().__init__()
-        self._account_file_path = account_file_path
 
-    def _load_credential(self):
-        if not self._g_credential:
-            self._g_credential, self._project_id = load_credentials_from_dict(CUSTOM_GOOGLE_APPLICATION_CREDENTIALS)
-
-
-
-custom_credentials = CustomFirebaseCredentials(CUSTOM_GOOGLE_APPLICATION_CREDENTIALS)
-FIREBASE_MESSAGING_APP = initialize_app(custom_credentials, name='messaging')
-
-BROKER_TRANSPORT_OPTIONS = {"socket_keepalive": True, "health_check_interval": 4}
-
+cred = credentials.Certificate(CUSTOM_GOOGLE_APPLICATION_CREDENTIALS)
+FIREBASE_MESSAGING_APP = initialize_app(cred, {'projectId': "vaccinateapp"}, name='messaging')
 FCM_DJANGO_SETTINGS = {
     "DEFAULT_FIREBASE_APP": FIREBASE_MESSAGING_APP,
     "APP_VERBOSE_NAME": "Vaccinate App",
