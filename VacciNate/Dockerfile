@@ -14,4 +14,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 EXPOSE 80
 
 # Run migrations, start the Celery worker, and start the application when the container launches
-CMD python manage.py migrate && celery -A VacciNate worker --loglevel=info & gunicorn VacciNate.wsgi --bind 0.0.0.0:$PORT
+CMD python manage.py migrate && gunicorn VacciNate.wsgi --bind 0.0.0.0:$PORT
