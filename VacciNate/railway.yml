@@ -1,0 +1,3 @@
+services:
+  celery:
+    command: celery -A VacciNate worker --beat -l INFO
