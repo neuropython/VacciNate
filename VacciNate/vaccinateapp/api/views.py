@@ -99,7 +99,7 @@ def update_date (request, id, old_date, new_date):
 def update_dose (request, id):
     object = UserVaccine.objects.get(id = id)
     object.dose += 1
-    if object.dose == len(object.all_dates):
+    if object.dose >= len(object.all_dates) + 1:
         object.status = "done"
     object.save()
     return HttpResponse("Dose updated")
