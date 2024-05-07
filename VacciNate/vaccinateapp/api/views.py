@@ -98,8 +98,8 @@ def update_date (request, id, old_date, new_date):
 @permission_classes([IsAuthenticated])
 def update_dose (request, id):
     object = UserVaccine.objects.get(id = id)
-    object.dose -= 1
-    if object.dose == 0:
+    object.dose += 1
+    if object.dose == len(object.all_dates):
         object.status = "done"
     object.save()
     return HttpResponse("Dose updated")
