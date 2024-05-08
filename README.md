@@ -3,7 +3,7 @@
   ```mermaid
 flowchart LR
 
-subgraph rwp["Your Railway Project"]
+subgraph rwp["Vaccinate Backend"]
     subgraph public["Publicly exposed services"]
         django["App container\n(Django server)"]
     end
